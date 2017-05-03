@@ -15,6 +15,10 @@ class ViewController: UIViewController {
 
     @IBOutlet var schedulePicker: SchedulePicker!
 
+    // MARK: -
+
+    private let disposeBag = DisposeBag()
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -38,19 +42,18 @@ class ViewController: UIViewController {
         let scheduleRawValue = UserDefaults.standard.integer(forKey: UserDefaults.Keys.schedule)
 
         // Configure Schedule Picker
-        schedulePicker.schedule = Schedule(rawValue: scheduleRawValue)
-    }
+        schedulePicker.setSchedule(Schedule(rawValue: scheduleRawValue))
 
-    // MARK: - Actions
+        // Subscribe to Schedule
+        schedulePicker.schedule.subscribe(onNext: {
+                // Helpers
+                let userDefaults = UserDefaults.standard
 
-    @IBAction func scheduleDidChange(_ sender: SchedulePicker) {
-        // Helpers
-        let userDefaults = UserDefaults.standard
-
-        // Store Value
-        let scheduleRawValue = sender.schedule.rawValue
-        userDefaults.set(scheduleRawValue, forKey: UserDefaults.Keys.schedule)
-        userDefaults.synchronize()
+                // Store Value
+                userDefaults.set($0.rawValue, forKey: UserDefaults.Keys.schedule)
+                userDefaults.synchronize()
+            })
+            .addDisposableTo(disposeBag)
     }
 
 }
