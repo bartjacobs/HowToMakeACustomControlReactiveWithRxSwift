@@ -30,9 +30,8 @@ class SchedulePicker: UIControl {
 
     // MARK: - Properties
 
-    var schedule: Schedule = [] {
-        didSet { updateView() }
-    }
+    private var scheduleVariable: Variable<Schedule> = Variable<Schedule>(Schedule(rawValue: 0))
+    public var schedule: Observable<Schedule> { return scheduleVariable.asObservable() }
 
     // MARK: -
 
