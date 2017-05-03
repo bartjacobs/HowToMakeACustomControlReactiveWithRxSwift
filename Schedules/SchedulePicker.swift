@@ -39,6 +39,10 @@ class SchedulePicker: UIControl {
 
     // MARK: -
 
+    private let disposeBag = DisposeBag()
+
+    // MARK: -
+
     private enum Color {
 
         static let selected = UIColor.white
@@ -56,14 +60,16 @@ class SchedulePicker: UIControl {
         setupView()
     }
 
+    // MARK: - Public API
+
+    public func setSchedule(_ newSchedule: Schedule) {
+        scheduleVariable.value = newSchedule
+    }
+
     // MARK: - View Methods
 
     private func setupView() {
         setupButtons()
-    }
-
-    private func updateView() {
-        updateButtons()
     }
 
     // MARK: -
@@ -105,9 +111,19 @@ class SchedulePicker: UIControl {
         bottomAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
         leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
         trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
+
+        // Subscribe to Schedule
+        schedule.subscribe(onNext: { [unowned self] value in
+                // Update Buttons
+                self.updateButtons()
+            })
+            .addDisposableTo(disposeBag)
     }
 
     private func updateButtons() {
+        // Helpers
+        let schedule = scheduleVariable.value
+
         buttons[0].isSelected = schedule.contains(.monday)
         buttons[1].isSelected = schedule.contains(.tuesday)
         buttons[2].isSelected = schedule.contains(.wednesday)
@@ -126,6 +142,7 @@ class SchedulePicker: UIControl {
 
         // Helpers
         let element: Schedule.Element
+        var schedule = scheduleVariable.value
 
         switch index {
         case 0: element = .monday
@@ -143,12 +160,12 @@ class SchedulePicker: UIControl {
         } else {
             schedule.insert(element)
         }
-
+        
         // Update Buttons
         updateButtons()
-
-        // Send Actions
-        sendActions(for: .valueChanged)
+        
+        // Update Schedule Variable
+        scheduleVariable.value = schedule
     }
 
 }
