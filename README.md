@@ -1,19 +1,43 @@
-### [How to Create a Custom Control Using a Bitmask](https://cocoacasts.com/how-to-create-a-custom-control-using-a-bitmask/)
+### [How to Make a Custom Control Reactive With RxSwift](https://cocoacasts.com/how-to-make-a-custom-control-reactive-with-rxswift/)
 
 #### Author: Bart Jacobs
 
-[Earlier this week](https://cocoacasts.com/how-to-work-with-bitmasks-in-swift/), I showed you how easy it is to work with bitmasks using Swift and the Swift standard library. In today's tutorial, I'd like to show you how to create a custom control that uses the `Schedule` structure we created [earlier](https://cocoacasts.com/how-to-work-with-bitmasks-in-swift/). This is what the result will look like when we're finished.
+Earlier this week, I showed you [how to create a custom control using a bitmask](https://cocoacasts.com/how-to-create-a-custom-control-using-a-bitmask/). But it's time to take it one step further by adding RxSwift to the mix. In this tutorial, we make the custom control we built reactive using RxSwift.
 
-![How to Create a Custom Control Using a Bitmask](https://cocoacasts.s3.amazonaws.com/how-to-create-a-custom-control-using-a-bitmask/figure-how-to-create-a-custom-control-using-a-bitmask.jpg)
+## Cloning the Repository
 
-## Setting Up the Project In Xcode
+Head over to [GitHub](https://github.com/bartjacobs/HowToCreateACustomControlUsingABitmask) and clone the project if you'd like to follow along. Open Terminal and execute the following command.
 
-Fire up Xcode, create a new project, and choose the **Single View Application** template from the **iOS > Application** section.
+```language-bash
+git clone git@github.com:bartjacobs/HowToCreateACustomControlUsingABitmask.git
+```
 
-![Setting Up the Project In Xcode](https://cocoacasts.s3.amazonaws.com/how-to-create-a-custom-control-using-a-bitmask/figure-project-setup-1.jpg)
+## Adding Dependencies
 
-Name the project **Schedules** and set **Language** to **Swift**.
+You can add RxSwift one of several ways. I prefer CocoaPods. Navigate to the root of the project and execute the following command to set up CocoaPods for the project.
 
-![Configuring the Project In Xcode](https://cocoacasts.s3.amazonaws.com/how-to-create-a-custom-control-using-a-bitmask/figure-project-setup-2.jpg)
+```language-bash
+pod init
+```
 
-**Read this article on [Cocoacasts](https://cocoacasts.com/how-to-create-a-custom-control-using-a-bitmask/)**.
+Open the project's **Podfile** in your favorite text editor and add RxSwift as a dependency.
+
+```language-ruby
+target 'Schedules' do
+  use_frameworks!
+  platform :ios, '10.0'
+
+  pod 'RxSwift'
+end
+```
+
+From the command line, execute `pod repo update` to make sure the specs repositories on your machine are up to date. To install the dependencies, execute `pod install`.
+
+```language-bash
+pod repo update
+pod install
+```
+
+This tutorial uses version **3.4.1** of RxSwift. Open the workspace CocoaPods has created for you and trigger a build by choosing **Build** from the **Product** menu. You shouldn't see any errors or warnings.
+
+**Read this article on [Cocoacasts](https://cocoacasts.com/how-to-make-a-custom-control-reactive-with-rxswift/)**.
